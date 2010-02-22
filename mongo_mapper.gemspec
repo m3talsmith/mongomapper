@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Nunemaker"]
-  s.date = %q{2010-02-19}
+  s.date = %q{2010-02-21}
   s.default_executable = %q{mmconsole}
   s.email = %q{nunemaker@gmail.com}
   s.executables = ["mmconsole"]
@@ -171,6 +171,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.beta"])
+      s.add_runtime_dependency(%q<activemodel>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<mongo>, ["= 0.18.3"])
       s.add_development_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
       s.add_development_dependency(%q<shoulda>, ["= 2.10.2"])
@@ -178,6 +179,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<mocha>, ["= 0.9.8"])
     else
       s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
+      s.add_dependency(%q<activemodel>, [">= 3.0.0.beta"])
       s.add_dependency(%q<mongo>, ["= 0.18.3"])
       s.add_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
       s.add_dependency(%q<shoulda>, ["= 2.10.2"])
@@ -186,6 +188,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
+    s.add_dependency(%q<activemodel>, [">= 3.0.0.beta"])
     s.add_dependency(%q<mongo>, ["= 0.18.3"])
     s.add_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
     s.add_dependency(%q<shoulda>, ["= 2.10.2"])
