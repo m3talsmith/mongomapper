@@ -45,26 +45,36 @@ module MongoMapper
       end
 
       def find(*args)
-        assert_no_first_last_or_all(args)
-        options = args.extract_options!
+        # Scheduled for replacement: see extract_selector_and_options! (m3talsmith)
+        # assert_no_first_last_or_all(args)
         return nil if args.size == 0
-
-        if args.first.is_a?(Array) || args.size > 1
-          find_some(args, options)
+        selector, options = extract_selector_and_options!(args)
+        
+        if selector
+          return self.send(selector.to_sym, options)
         else
-          find_one(options.merge({:_id => args[0]}))
+          if args.first.is_a?(Array) || args.size > 1
+            find_some(args, options)
+          else
+            find_one(options.merge({:_id => args[0]}))
+          end
         end
       end
 
       def find!(*args)
-        assert_no_first_last_or_all(args)
-        options = args.extract_options!
+        # Scheduled for replacement: see extract_selector_and_options! (m3talsmith)
+        # assert_no_first_last_or_all(args)
         raise DocumentNotFound, "Couldn't find without an ID" if args.size == 0
-
-        if args.first.is_a?(Array) || args.size > 1
-          find_some!(args, options)
+        selector, options = extract_selector_and_options!(args)
+        
+        if selector
+          return self.send(selector.to_sym, options)
         else
-          find_one(options.merge({:_id => args[0]})) || raise(DocumentNotFound, "Document match #{options.inspect} does not exist in #{collection.name} collection")
+          if args.first.is_a?(Array) || args.size > 1
+            find_some!(args, options)
+          else
+            find_one(options.merge({:_id => args[0]})) || raise(DocumentNotFound, "Document match #{options.inspect} does not exist in #{collection.name} collection")
+          end
         end
       end
 
@@ -267,10 +277,21 @@ module MongoMapper
           criteria = args[0].is_a?(Hash) ? args[0] : {:id => args}
           [to_criteria(criteria), keys]
         end
+        
+        def extract_selector_and_options!(args)
+          selector = nil
+          if args[0] == :first || args[0] == :last || args[0] == :all
+            selector = args.shift
+          end
+          options = args.extract_options!
+          
+          return selector, options
+        end
 
+        # Scheduled for replacement: m3talsmith
         def assert_no_first_last_or_all(args)
           if args[0] == :first || args[0] == :last || args[0] == :all
-            raise ArgumentError, "#{self}.find(:#{args}) is no longer supported, use #{self}.#{args} instead."
+            raise ArgumentError, "#{self}.find(:#{args[0]}) is no longer supported, use #{self}.#{args[0]} instead."
           end
         end
 

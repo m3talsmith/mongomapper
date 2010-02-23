@@ -244,15 +244,30 @@ class DocumentTest < Test::Unit::TestCase
       end
     end
     
-    should "raise error if trying to find with :all, :first, or :last" do
-      [:all, :first, :last].each do |m|
-        assert_raises(ArgumentError) { @document.find(m) }
-      end
-
-      [:all, :first, :last].each do |m|
-        assert_raises(ArgumentError) { @document.find!(m) }
+    # Test to make sure that if :first, :last, or :all are in the arguments, that their respective class methods are called. This makes the previous behavior, raising an argument to use the new methods, obsolete. (m3talsmith)
+    [:first,:last, :all].each do |selector|
+      should "make @document.find(:#{selector}, options) call @document.#{selector}(options)" do
+        case selector
+        when "all"
+          assert @document.find(selector.to_sym).length >= 1
+        when "first"
+          assert @document.find(selector.to_sym).class == Post
+        when "last"
+          assert @document.find(selector.to_sym, :order => "created_at").class == Doc
+        end
       end
     end
+    
+    # Raising an argument on these find selectors makes no since when we can just call the proper selector method. See above test that makes this one obsolete. (m3talsmith)
+    # should "raise error if trying to find with :all, :first, or :last" do
+    #   [:all, :first, :last].each do |m|
+    #     assert_raises(ArgumentError) { @document.find(m) }
+    #   end
+    # 
+    #   [:all, :first, :last].each do |m|
+    #     assert_raises(ArgumentError) { @document.find!(m) }
+    #   end
+    # end
 
     context "(with a single id)" do
       should "work" do

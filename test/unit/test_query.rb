@@ -14,7 +14,7 @@ class QueryTest < Test::Unit::TestCase
       key.should be_instance_of(Symbol)
     end
   end
-
+  
   context "Converting conditions to criteria" do
     should "not add _type to query if model does not have superclass that is single collection inherited" do
       Query.new(Message, :foo => 'bar').criteria.should == {
