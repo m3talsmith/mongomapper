@@ -60,6 +60,5 @@ http://www.pivotaltracker.com/projects/33576
 There is no need to request to join the Pivotal Tracker project as I am only granting access to a select few (easier to keep things organized). If you have a problem, please use the mailing list. If I confirm it to be a bug, I am happy to add it to PT. Thanks!
 
 == Copyright
->>>>>>> 3b071e4e5ebd220ee00ac101be230822062d5bf5
 
 Copyright (c) 2009 John Nunemaker. See LICENSE for details.
