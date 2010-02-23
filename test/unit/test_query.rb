@@ -36,7 +36,7 @@ class QueryTest < Test::Unit::TestCase
         :_type => 'Enter'
       }
     end
-
+    
     %w{gt lt gte lte ne in nin mod all size where exists}.each do |operator|
       should "convert #{operator} conditions" do
         Query.new(Room, :age.send(operator) => 21).criteria.should == {
@@ -44,18 +44,18 @@ class QueryTest < Test::Unit::TestCase
         }
       end
     end
-
+    
     should "normalize value when using symbol operators" do
       time = Time.now.in_time_zone('Indiana (East)')
       criteria = Query.new(Room, :created_at.gt => time).criteria
       criteria[:created_at]['$gt'].should be_utc
     end
-
+    
     should "work with simple criteria" do
       Query.new(Room, :foo => 'bar').criteria.should == {
         :foo => 'bar'
       }
-
+      
       Query.new(Room, :foo => 'bar', :baz => 'wick').criteria.should == {
         :foo => 'bar',
         :baz => 'wick'
@@ -127,7 +127,7 @@ class QueryTest < Test::Unit::TestCase
       Query.new(Room, :foo => {:bar => [1,2,3]}).criteria.should == {
         :foo => {:bar => {'$in' => [1,2,3]}}
       }
-
+      
       Query.new(Room, :foo => {:bar => {'$any' => [1,2,3]}}).criteria.should == {
         :foo => {:bar => {'$any' => [1,2,3]}}
       }
@@ -317,12 +317,12 @@ class QueryTest < Test::Unit::TestCase
         :limit => 10,
         :skip => 10,
       })
-
+      
       query_options.criteria.should == {
         :foo => 'bar',
         :baz => true,
       }
-
+      
       query_options.options.should == {
         :sort => [['foo', 1]],
         :fields => ['foo', 'baz'],

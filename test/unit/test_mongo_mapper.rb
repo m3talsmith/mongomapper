@@ -76,7 +76,7 @@ class MongoMapperTest < Test::Unit::TestCase
       MongoMapper.expects(:handle_passenger_forking).never
       MongoMapper.setup(config, 'development', :logger => logger)
     end
-
+    
     should "handle passenger if option present" do
       config, logger = mock('config'), mock('logger')
       MongoMapper.expects(:config=).with(config)
